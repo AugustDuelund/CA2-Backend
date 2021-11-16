@@ -16,9 +16,11 @@ public class UrlFetcher {
 
     static class PingBored implements Callable<BoredDTO> {
         String url;
+
         PingBored(String url) {
             this.url = url;
         }
+
         @Override
         public BoredDTO call() throws Exception {
             String joke = HttpUtils.fetchData(url);
@@ -29,9 +31,11 @@ public class UrlFetcher {
 
     static class PingCat implements Callable<CatDTO> {
         String url;
+
         PingCat(String url) {
             this.url = url;
         }
+
         @Override
         public CatDTO call() throws Exception {
             String joke = HttpUtils.fetchData(url);
@@ -42,9 +46,11 @@ public class UrlFetcher {
 
     static class PingDog implements Callable<DogDTO> {
         String url;
+
         PingDog(String url) {
             this.url = url;
         }
+
         @Override
         public DogDTO call() throws Exception {
             String joke = HttpUtils.fetchData(url);
@@ -55,9 +61,11 @@ public class UrlFetcher {
 
     static class PingGenderized implements Callable<GenderizeDTO> {
         String url;
+
         PingGenderized(String url) {
             this.url = url;
         }
+
         @Override
         public GenderizeDTO call() throws Exception {
             String joke = HttpUtils.fetchData(url);
@@ -66,21 +74,38 @@ public class UrlFetcher {
         }
     }
 
-    public static OurDTO runParrallel() throws ExecutionException, InterruptedException {
-        ExecutorService executor = Executors.newCachedThreadPool();
-        List<String> urls = new ArrayList<>();
-        urls.add("https://www.boredapi.com/api/activity");
-        urls.add("https://catfact.ninja/fact");
-        urls.add("https://dog.ceo/api/breeds/image/random");
-        urls.add("https://api.genderize.io/?name=luc");
+        static class PingNationalize implements Callable<NationalizeDTO> {
+            String url;
 
-        Future future1 = executor.submit(new PingBored(urls.get(0)));
-        Future future2 = executor.submit(new PingCat(urls.get(1)));
-        Future future3 = executor.submit(new PingDog(urls.get(2)));
-        Future future4 = executor.submit(new PingGenderized(urls.get(3)));
+            PingNationalize(String url) {
+                this.url = url;
+            }
 
-        OurDTO jokes = new OurDTO((BoredDTO) future1.get(), (CatDTO) future2.get(), (DogDTO) future3.get(), (GenderizeDTO) future4.get());
+            @Override
+            public NationalizeDTO call() throws Exception {
+                String joke = HttpUtils.fetchData(url);
+                NationalizeDTO nationalizeDTO = gson.fromJson(joke, NationalizeDTO.class);
+                return nationalizeDTO;
+            }
+        }
 
-        return jokes;
+        public static OurDTO runParrallel() throws ExecutionException, InterruptedException {
+            ExecutorService executor = Executors.newCachedThreadPool();
+            List<String> urls = new ArrayList<>();
+            urls.add("https://www.boredapi.com/api/activity");
+            urls.add("https://catfact.ninja/fact");
+            urls.add("https://dog.ceo/api/breeds/image/random");
+            urls.add("https://api.genderize.io/?name=luc");
+            urls.add("https://api.nationalize.io/?name=nathaniel");
+
+            Future future1 = executor.submit(new PingBored(urls.get(0)));
+            Future future2 = executor.submit(new PingCat(urls.get(1)));
+            Future future3 = executor.submit(new PingDog(urls.get(2)));
+            Future future4 = executor.submit(new PingGenderized(urls.get(3)));
+            Future future5 = executor.submit(new PingNationalize(urls.get(4)));
+
+            OurDTO jokes = new OurDTO((BoredDTO) future1.get(), (CatDTO) future2.get(), (DogDTO) future3.get(), (GenderizeDTO) future4.get(), (NationalizeDTO) future5.get());
+
+            return jokes;
+        }
     }
-}

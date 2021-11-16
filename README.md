@@ -15,5 +15,29 @@
 This document explains how to use this code (build, test and deploy), locally with maven, and remotely with maven controlled by Travis
  - [How to use](https://docs.google.com/document/d/1K6s6Tt65bzB8bCSE_NUE8alJrLRNTKCwax3GEm4OjOE/edit?usp=sharing)
 # Startcode
+
+How to set up the startcode for your computer step by step
+
+1.	Download the startcode to a folder located somewhere in your computer.
+2.	Create 2 separate repositories on github and push the latest changes.
+3.	Put up secrets for security purposes.
+4.	Open up backend and change the artifact and remote server.
+5.	Open up MySql and create the schemas you need, connect them to intellij and write them into the persistence.xml file.
+6.	Set up tomcat server
+7.	Check if test are running smoothly
+8.	Set up the github actions on the pipeline
+9.	If secrets are set up properly github actions should be working
+10.	Create another DTO class
+11.	Add the DTO to ourDTO
+12.	Link it up in the urlFetcher
+13.	Once the backend is done proceed to the frontend
+14.	Enter facade.js and correct the url
+15.	In the components add another file for the new DTO
+16.	Add it in the facade.js
+17.	Last but not least put it up on surge.sh
+
+
+ 
+
 # CA2-Backend
 # CA2-Backend
